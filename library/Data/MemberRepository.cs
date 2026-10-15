@@ -39,4 +39,16 @@ public class MemberRepository
 
         return members;
     }
+
+    public async Task CreateAsync(Member member)
+    {
+        const string sql = "INSERT INTO lending.member (full_name, email, member_type) VALUES (@fullName, @email, @memberType);";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("fullName", member.FullName);
+        command.Parameters.AddWithValue("email", (object?)member.Email ?? DBNull.Value);
+        command.Parameters.AddWithValue("memberType", member.MemberType);
+
+        await command.ExecuteNonQueryAsync();
+    }
 }

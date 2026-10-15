@@ -18,4 +18,21 @@ public class MembersController : Controller
         var members = await _members.GetAllAsync();
         return View(members);
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(Member member)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(member);
+        }
+
+        await _members.CreateAsync(member);
+        return RedirectToAction(nameof(Index));
+    }
 }
