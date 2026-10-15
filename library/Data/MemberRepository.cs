@@ -42,11 +42,21 @@ public class MemberRepository
 
     public async Task CreateAsync(Member member)
     {
-        const string sql = "INSERT INTO lending.member (full_name, email, member_type) VALUES (@fullName, @email, @memberType);";
+        const string sql = "INSERT INTO lending.member (full_name, email, member_type) " +
+                           "VALUES (@fullName, @email, @memberType);";
 
         await using var command = _dataSource.CreateCommand(sql);
         command.Parameters.AddWithValue("fullName", member.FullName);
-        command.Parameters.AddWithValue("email", (object?)member.Email ?? DBNull.Value);
+
+        if (string.IsNullOrWhiteSpace(member.Email))
+        {
+            command.Parameters.AddWithValue("email", DBNull.Value);
+        }
+        else
+        {
+            command.Parameters.AddWithValue("email", member.Email);
+        }
+
         command.Parameters.AddWithValue("memberType", member.MemberType);
 
         await command.ExecuteNonQueryAsync();
@@ -60,22 +70,39 @@ public class MemberRepository
         command.Parameters.AddWithValue("id", id);
 
         await using var reader = await command.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-        {
-            return ReadMember(reader);
-        }
-        return null;
+        return await reader.ReadAsync() ? ReadMember(reader) : null;
     }
 
     public async Task UpdateAsync(Member member)
     {
-        const string sql = "UPDATE lending.member SET full_name = @fullName, email = @email, member_type = @memberType WHERE member_id = @id;";
+        const string sql = "UPDATE lending.member " +
+                           "SET full_name = @fullName, email = @email, member_type = @memberType " +
+                           "WHERE member_id = @id;";
 
         await using var command = _dataSource.CreateCommand(sql);
         command.Parameters.AddWithValue("fullName", member.FullName);
-        command.Parameters.AddWithValue("email", (object?)member.Email ?? DBNull.Value);
+
+        if (string.IsNullOrWhiteSpace(member.Email))
+        {
+            command.Parameters.AddWithValue("email", DBNull.Value);
+        }
+        else
+        {
+            command.Parameters.AddWithValue("email", member.Email);
+        }
+
         command.Parameters.AddWithValue("memberType", member.MemberType);
         command.Parameters.AddWithValue("id", member.MemberId);
+
+        await command.ExecuteNonQueryAsync();
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        const string sql = "DELETE FROM lending.member WHERE member_id = @id;";
+
+        await using var command = _dataSource.CreateCommand(sql);
+        command.Parameters.AddWithValue("id", id);
 
         await command.ExecuteNonQueryAsync();
     }

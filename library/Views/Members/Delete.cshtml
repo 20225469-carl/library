@@ -1,0 +1,18 @@
+﻿@model Member
+@{
+    ViewData["Title"] = "Delete Member";
+}
+
+<h1>Delete Member</h1>
+<p class="text-danger">Are you sure you want to delete this member?</p>
+
+<div>
+    <h4>@Model.FullName</h4>
+    <p>Email: @(Model.Email ?? "—")</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="MemberId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
