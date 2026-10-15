@@ -11,4 +11,12 @@
     <PackageReference Include="Npgsql" Version="10.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="Z:\library\library\Models\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Z:\library\library\Models\.editorconfig" />
+  </ItemGroup>
+
 </Project>
