@@ -1,0 +1,43 @@
+﻿@model Member
+@{
+    ViewData["Title"] = "Edit Member";
+}
+
+<div class="container my-5" style="max-width: 600px;">
+    <div class="border border-dark p-4 bg-white shadow-sm">
+        <h2 class="fw-bold text-uppercase fs-4 mb-3 pb-2 border-bottom border-dark text-dark">Edit Member</h2>
+
+        <form asp-action="Edit" method="post" class="mt-3">
+            <input type="hidden" asp-for="MemberId" />
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label text-uppercase fw-semibold fs-7 text-dark">Full Name</label>
+                <input asp-for="FullName" class="form-control rounded-0 border-dark shadow-none" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label text-uppercase fw-semibold fs-7 text-dark">Email Address</label>
+                <input asp-for="Email" class="form-control rounded-0 border-dark shadow-none" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label text-uppercase fw-semibold fs-7 text-dark">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control rounded-0 border-dark shadow-none" />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="MemberType" class="form-label text-uppercase fw-semibold fs-7 text-dark">Member Type</label>
+                <select asp-for="MemberType" class="form-select rounded-0 border-dark shadow-none">
+                    <option value="Regular">Regular</option>
+                    <option value="Student">Student</option>
+                    <option value="Faculty">Faculty</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-dark">
+                <a asp-action="Index" class="btn btn-outline-dark rounded-0 text-uppercase px-4 fw-semibold">Cancel</a>
+                <button type="submit" class="btn btn-dark rounded-0 text-uppercase px-5 fw-semibold">Update Member</button>
+            </div>
+        </form>
+    </div>
+</div>
