@@ -32,6 +32,7 @@
                 <td>@m.JoinDate.ToString("yyyy-MM-dd")</td>
                 <td>@m.MemberType</td>
                 <td class="text-end"></td>
+                <a asp-action="Edit" asp-route-id="@m.MemberId" class="btn btn-sm btn-outline-secondary">Edit</a>
             </tr>
         }
     </tbody>

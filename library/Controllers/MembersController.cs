@@ -35,4 +35,22 @@ public class MembersController : Controller
         await _members.CreateAsync(member);
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Edit(long id)
+    {
+        var member = await _members.GetByIdAsync(id);
+        if (member == null) return NotFound();
+        return View(member);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(long id, Member member)
+    {
+        if (id != member.MemberId) return NotFound();
+
+        if (!ModelState.IsValid) return View(member);
+
+        await _members.UpdateAsync(member);
+        return RedirectToAction(nameof(Index));
+    }
 }
