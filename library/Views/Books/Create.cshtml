@@ -2,9 +2,7 @@
 @{
     ViewData["Title"] = "Add a book";
 }
-
 <h1 class="mb-3">Add a book</h1>
-
 <form asp-action="Create" method="post" class="card card-body" style="max-width:36rem">
 
     <div class="mb-3">
@@ -36,3 +34,7 @@
         <a asp-action="Index" class="btn btn-link">Cancel</a>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
