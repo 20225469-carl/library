@@ -25,9 +25,7 @@ public class MembersController : Controller
         return View();
     }
 
-    // POST /Members/Create : the form was submitted.
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Member member)
     {
         if (!ModelState.IsValid)
@@ -35,16 +33,7 @@ public class MembersController : Controller
             return View(member);
         }
 
-        try
-        {
-            await _members.CreateAsync(member);
-        }
-        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
-        {
-            ModelState.AddModelError("Email", "Another member already uses this email.");
-            return View(member);
-        }
-
+        await _members.CreateAsync(member);
         return RedirectToAction(nameof(Index));
     }
 
@@ -53,30 +42,6 @@ public class MembersController : Controller
         var member = await _members.GetByIdAsync(id);
         if (member == null) return NotFound();
         return View(member);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(long id, Member member)
-    {
-        if (id != member.MemberId) return NotFound();
-
-        if (!ModelState.IsValid)
-        {
-            return View(member);
-        }
-
-        try
-        {
-            await _members.UpdateAsync(member);
-        }
-        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
-        {
-            ModelState.AddModelError("Email", "Another member already uses this email.");
-            return View(member);
-        }
-
-        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(long id)
@@ -93,19 +58,36 @@ public class MembersController : Controller
     {
         try
         {
+            // 1. Delete the member.
             await _members.DeleteAsync(id);
         }
         catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
         {
+            // 3. Load the member again, to show them on the page.
             var member = await _members.GetByIdAsync(id);
             if (member == null)
             {
+                // 5. Answer "not found".
                 return NotFound();
             }
+            // 6. Set the message the page will show.
             ViewBag.Error = "This member has loans on record, so the database will not delete them.";
+            // 7. Show the Delete page again, with the member.
             return View("Delete", member);
         }
 
+        // 8. The member was deleted: go back to the list.
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(long id, Member member)
+    {
+        if (id != member.MemberId) return NotFound();
+
+        if (!ModelState.IsValid) return View(member);
+
+        await _members.UpdateAsync(member);
         return RedirectToAction(nameof(Index));
     }
 }
