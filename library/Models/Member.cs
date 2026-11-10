@@ -20,4 +20,7 @@ public class Member
     public DateOnly JoinDate { get; set; }               // join_date    DATE NOT NULL
 
     public string MemberType { get; set; } = "";         // member_type  VARCHAR(10) NOT NULL
+
+    public int BooksOut { get; set; }                    // filled only by the member list; never saved
+
 }
