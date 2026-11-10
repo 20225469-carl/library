@@ -26,7 +26,7 @@
                     <th class="py-3 px-3">Phone</th>
                     <th class="py-3 px-3">Join Date</th>
                     <th class="py-3 px-3">Type</th>
-                    <th class="py-3 px-3 text-end" style="width: 12rem;">Actions</th>
+                    <th class="py-3 px-3 text-end" style="width: 14rem;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,7 +42,8 @@
                             <span class="badge bg-light text-dark border border-dark rounded-0 px-2 py-1">@m.MemberType</span>
                         </td>
                         <td class="text-end px-3">
-                            <a asp-action="Edit" asp-route-id="@m.MemberId" class="btn btn-sm btn-outline-dark rounded-0 text-uppercase px-2 py-1 fs-8">Edit</a>
+                            <a asp-action="Details" asp-route-id="@m.MemberId" class="btn btn-sm btn-outline-primary rounded-0 text-uppercase px-2 py-1 fs-8">Loans</a>
+                            <a asp-action="Edit" asp-route-id="@m.MemberId" class="btn btn-sm btn-outline-dark rounded-0 text-uppercase px-2 py-1 fs-8 ms-1">Edit</a>
                             <a asp-action="Delete" asp-route-id="@m.MemberId" class="btn btn-sm btn-dark rounded-0 text-uppercase px-2 py-1 fs-8 ms-1">Delete</a>
                         </td>
                     </tr>
