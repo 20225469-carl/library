@@ -32,7 +32,11 @@
                 @foreach (var loan in Model)
                 {
                     <tr class="border-top border-light">
-                        <td class="fw-bold text-dark px-3">@loan.MemberName</td>
+                        <td class="px-3">
+                            <a asp-controller="Members" asp-action="Details" asp-route-id="@loan.MemberId" class="text-dark fw-bold text-decoration-underline">
+                                @loan.MemberName
+                            </a>
+                        </td>
                         <td class="text-secondary px-3">@loan.BookTitle</td>
                         <td class="text-secondary px-3">@(loan.LoanedOn.ToString("yyyy-MM-dd"))</td>
                         <td class="text-secondary px-3">@(loan.LoanedOn.AddDays(loan.DaysAllowed).ToString("yyyy-MM-dd"))</td>
